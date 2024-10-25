@@ -45,7 +45,7 @@
 
         public Peca retirarPeca(Posicao pos) 
         {
-            if (existePeca(pos)) 
+            if (peca(pos) == null) 
             {
                 return null;
             
@@ -61,7 +61,7 @@
         {
             if(pos.linha < 0 || pos.linha >= linhas || pos.coluna >= colunas) 
             {
-                return true;
+                return false;
             }
 
             return true;

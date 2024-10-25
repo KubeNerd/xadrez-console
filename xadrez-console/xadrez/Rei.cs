@@ -5,9 +5,10 @@ namespace xadrez
 {
     class Rei : Peca
     {
-        public Rei(Tabuleiro tab, Cor cor) : base(tab, cor) 
+        //private PartidaDeXadrez partida;
+        public Rei(Tabuleiro tab, Cor cor/*, PartidaDeXadrez partida*/) : base(tab, cor) 
         {
-                        
+          //this.partida = partida;
         
         }
          
