@@ -10,22 +10,36 @@ namespace xadrez
         public Cor jogadorAtual { get; private set; }
         public bool terminada {  get; private set; }
 
+        private HashSet<Peca> pecas;
+
+        private HashSet<Peca> capturadas;
+
+        public bool xeque { get; private set; }
+
         public PartidaDeXadrez()
         {
             tab = new Tabuleiro(8, 8);
             turno = 1;
             jogadorAtual = Cor.Branca;
             terminada = false;
+            pecas = new HashSet<Peca>();
+            capturadas = new HashSet<Peca>();
             colocarPecas();
-       
+            xeque = false;
         }
 
+  
         public void executarMovimento(Posicao origem, Posicao destino)
         {
             Peca p = tab.retirarPeca(origem);
             p.incrementarQtdeMovimentos();
             Peca pecaCapturada = tab.retirarPeca(destino);
             tab.colocarPeca(p, destino);
+
+            if (pecaCapturada != null) 
+            {
+                capturadas.Add(pecaCapturada);
+            }
         }
 
         private void mudaJogador() 
@@ -77,13 +91,37 @@ namespace xadrez
 
         }
 
+        public HashSet<Peca> pecasCapturadas(Cor cor)
+        {
+            HashSet<Peca> aux = new HashSet<Peca>();
+            foreach (Peca x in capturadas) 
+            {
+                if (x.cor == cor) 
+                {
+                    aux.Add(x);
+                }
+                
+            }
+
+            aux.ExceptWith(pecasCapturadas(cor));
+
+            return aux;
+        }
+
+        public void colocarNovaPeca(char coluna, int linha, Peca peca)
+        {
+            tab.colocarPeca(peca, new PosicaoXadrez(coluna, linha).toPosicao());
+            pecas.Add(peca);
+        }
+
+
 
         private void colocarPecas() 
         {
-            tab.colocarPeca(new Rei(tab, Cor.Preta), new PosicaoXadrez('c', 8).toPosicao());
-            tab.colocarPeca(new Rei(tab, Cor.Preta), new PosicaoXadrez('d', 7).toPosicao());
-            tab.colocarPeca(new Torre(tab, Cor.Branca), new PosicaoXadrez('e', 1).toPosicao());
-            tab.colocarPeca(new Torre(tab, Cor.Branca), new PosicaoXadrez('e', 2).toPosicao());
+            colocarNovaPeca('a', 1, new Torre(tab, Cor.Branca));
+            colocarNovaPeca('b', 1, new Torre(tab, Cor.Branca));
+            colocarNovaPeca('c', 1, new Torre(tab, Cor.Branca));
+            colocarNovaPeca('d', 1, new Torre(tab, Cor.Branca));
         }
     }
 }
