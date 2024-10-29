@@ -11,8 +11,7 @@ namespace xadrez
           //this.partida = partida;
         
         }
-        
-
+       
         private bool podeMover(Posicao pos)
         {
             Peca p = tab.peca(pos);
@@ -77,8 +76,6 @@ namespace xadrez
 
 
             return mat;
-
-
         }
 
         public override string ToString()

@@ -9,6 +9,7 @@ namespace tabuleiro
         public Cor cor { get; protected set; }
         public Tabuleiro tab { get; protected set; }
         public int qteMovimento { get; set; }
+        public bool xeque {  get; private set; }
 
         public Peca(Tabuleiro tab, Cor cor)
         {
