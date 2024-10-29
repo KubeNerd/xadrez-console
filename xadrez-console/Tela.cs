@@ -34,6 +34,8 @@ namespace xadrez_console
         
         }
 
+
+
         public static void imprimirPecasCapturadas(PartidaDeXadrez partida)
         {
             Console.WriteLine("Peças capturadas:");
