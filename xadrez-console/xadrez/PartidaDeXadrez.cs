@@ -59,6 +59,8 @@ namespace xadrez
                 capturadas.Add(pecaCapturada);
             }
 
+            // #jogada especial roque pequeno
+
             if (p is Rei && destino.coluna == origem.coluna) 
             {
                 Posicao origemT = new Posicao(origem.linha, origem.coluna + 3);
@@ -68,7 +70,7 @@ namespace xadrez
                 T.incrementarQtdeMovimentos();
                 tab.colocarPeca(T, destinoT);
             }
-
+            // #jogada especial roque grande
             if (p is Rei && destino.coluna == origem.coluna - 2)
             {
                 Posicao origemT = new Posicao(origem.linha, origem.coluna - 4);
@@ -76,6 +78,26 @@ namespace xadrez
                 Peca T = tab.retirarPeca(origemT);
                 T.incrementarQtdeMovimentos();
                 tab.colocarPeca(T, destinoT);
+            }
+
+            // #jogada especial en passant
+            if (p is Peao)
+            {
+                if (origem.coluna != destino.coluna && pecaCapturada == null)
+                {
+                    Posicao posP;
+                    if (p.cor == Cor.Branca)
+                    {
+                        posP = new Posicao(destino.linha + 1, destino.coluna);
+                    }
+                    else
+                    {
+                        posP = new Posicao(destino.linha - 1, destino.coluna);
+                    }
+
+                    pecaCapturada = tab.retirarPeca(posP);
+                    capturadas.Add(pecaCapturada);
+                }
             }
 
             return pecaCapturada;
@@ -125,6 +147,7 @@ namespace xadrez
                 throw new TabuleiroException("Você não pode se colocar em xeque!");
             }
 
+            Peca p = tab.peca(destino);
             if (estaEmXeque(adversaria(jogadorAtual))) 
             {
                 xeque = true;
@@ -142,6 +165,16 @@ namespace xadrez
             } else {
                 turno++;
                 mudaJogador();
+            }
+
+            // #jogada especial en passant
+            if (p is Peao && (destino.linha == origem.linha - 2 || destino.linha == origem.linha + 2))
+            {
+                vulneravelEnPassant = p;
+            }
+            else
+            {
+                vulneravelEnPassant = null;
             }
 
         }
